@@ -3,13 +3,28 @@ import { TaskService } from "../services/taskService.js";
 export const TaskController = {
   async getTasks(req, res, next) {
     try {
-      const tasks = await TaskService.getAll();
+      let tasks = await TaskService.getAll();
+
+      // Filter by status
+      const { status, sort } = req.query;
+      if (status === "done") {
+        tasks = tasks.filter(task => task.completed);
+      } else if (status === "undone") {
+        tasks = tasks.filter(task => !task.completed);
+      }
+
+      // Sort by priority
+      if (sort === "priority:asc") {
+        tasks = tasks.sort((a, b) => a.priority - b.priority);
+      } else if (sort === "priority:desc") {
+        tasks = tasks.sort((a, b) => b.priority - a.priority);
+      }
+
       res.json(tasks);
     } catch (error) {
       next(error);
     }
   },
-
   async createTask(req, res, next) {
     try {
       const { title, priority = 5 } = req.body;

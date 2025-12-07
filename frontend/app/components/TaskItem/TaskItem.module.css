@@ -1,11 +1,17 @@
 .item {
   display: flex;
   justify-content: space-between;
-  padding: 0.5rem;
-  border-bottom: 1px solid #ccc;
   align-items: center;
-  background-color: white;
-  border-radius: 0.25rem;
+  padding: 8px;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .completed {
@@ -15,10 +21,5 @@
 
 .remove {
   color: red;
-}
-
-.content {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
+  cursor: pointer;
 }

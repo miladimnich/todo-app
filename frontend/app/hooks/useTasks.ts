@@ -1,3 +1,6 @@
+// app/hooks/useTasks.ts
+"use client";
+
 import { useState, useEffect, useCallback } from "react";
 import { Task, NewTask } from "../types/task";
 import * as api from "../services/api";
@@ -6,10 +9,10 @@ export function useTasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const loadTasks = useCallback(async () => {
+  const loadTasks = useCallback(async (options?: { status?: "all" | "done" | "undone"; sort?: "priority:asc" | "priority:desc" }) => {
     setLoading(true);
     try {
-      const data = await api.fetchTasks();
+      const data = await api.fetchTasks(options);
       setTasks(data);
     } finally {
       setLoading(false);
@@ -27,11 +30,7 @@ export function useTasks() {
   };
 
   const toggleTask = async (task: Task) => {
-    await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/tasks/${task.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ completed: !task.completed }),
-    });
+    await api.updateTask(task.id, { completed: !task.completed });
     await loadTasks();
   };
 
@@ -39,5 +38,5 @@ export function useTasks() {
     loadTasks();
   }, [loadTasks]);
 
-  return { tasks, loading, addTask, removeTask, toggleTask };
+  return { tasks, loading, loadTasks, addTask, removeTask, toggleTask };
 }

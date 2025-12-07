@@ -1,4 +1,5 @@
 "use client";
+
 import { Task } from "../../types/task";
 import styles from "./TaskItem.module.css";
 
@@ -11,17 +12,19 @@ interface TaskItemProps {
 export default function TaskItem({ task, onRemove, onToggle }: TaskItemProps) {
   return (
     <div className={styles.item}>
-      <div className={styles.content}>
+      <div className={styles.left}>
         <input
           type="checkbox"
           checked={task.completed}
           onChange={() => onToggle(task)}
         />
+
         <span className={task.completed ? styles.completed : ""}>
           {task.title} (Priority: {task.priority})
         </span>
       </div>
-      <button onClick={() => onRemove(task.id)} className={styles.remove}>
+
+      <button className={styles.remove} onClick={() => onRemove(task.id)}>
         Remove
       </button>
     </div>
