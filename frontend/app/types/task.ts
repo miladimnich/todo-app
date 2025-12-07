@@ -4,3 +4,4 @@ export interface Task {
   completed: boolean;
   priority: number;
 }
+export type NewTask = Omit<Task, "id" | "completed">;
