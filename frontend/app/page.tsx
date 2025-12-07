@@ -6,7 +6,7 @@ import TaskList from "./components/TaskList/TaskList";
 import { useTasks } from "./hooks/useTasks";
 
 export default function Page() {
-  const { tasks, loading, loadTasks, addTask, removeTask, toggleTask } = useTasks();
+  const { tasks, loading, loadTasks, addTask, removeTask, toggleTask, updateTask } = useTasks();
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<"all" | "done" | "undone">("all");
   const [sort, setSort] = useState<"priority:asc" | "priority:desc">("priority:asc");
@@ -71,7 +71,12 @@ export default function Page() {
         {loading ? (
           <p>Loading tasks...</p>
         ) : (
-          <TaskList tasks={filteredTasks} onRemove={removeTask} onToggle={toggleTask} />
+          <TaskList
+            tasks={filteredTasks}
+            onRemove={removeTask}
+            onToggle={toggleTask}
+            onUpdate={updateTask} // pass the hook’s updateTask
+          />
         )}
       </div>
     </main>
